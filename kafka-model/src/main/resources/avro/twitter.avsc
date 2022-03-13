@@ -1,0 +1,33 @@
+{
+  "namespace": "io.twitter.reporter.kafka.model",
+  "type": "record",
+  "name": "Tweet",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "text",
+      "type": [
+        "null",
+        "string"
+      ]
+    },
+    {
+      "name": "createAt",
+      "type": [
+        "null",
+        "long"
+      ],
+      "logicalType": [
+        "null",
+        "date"
+      ]
+    }
+  ]
+}
