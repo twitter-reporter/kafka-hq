@@ -1,6 +1,6 @@
 package io.twitter.reporter.kafka.admin.creator;
 
-import io.twitter.reporter.config.KafkaConfiguration;
+import io.twitter.reporter.config.KafkaAdminProperties;
 import io.twitter.reporter.kafka.admin.exception.KafkaClientException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class KafkaTopicCreator {
 
-    private final KafkaConfiguration kafkaConfiguration;
+    private final KafkaAdminProperties adminProperties;
 
     private final RetryTemplate retryTemplate;
 
     private final AdminClient adminClient;
 
     public void createTopics() {
-        final Set<String> topicNamesToCreate = kafkaConfiguration.getTopicNamesToCreate();
+        final Set<String> topicNamesToCreate = adminProperties.getTopicNamesToCreate();
         log.info("Creating topics: [{}]", topicNamesToCreate);
 
         try {
@@ -38,13 +38,13 @@ public class KafkaTopicCreator {
     }
 
     private CreateTopicsResult doCreateTopic(final RetryContext retryContext) {
-        final Set<String> topicNamesToCreate = kafkaConfiguration.getTopicNamesToCreate();
+        final Set<String> topicNamesToCreate = adminProperties.getTopicNamesToCreate();
         log.info("Creating topics: [{}] in attempt: <{}>", topicNamesToCreate, retryContext.getRetryCount());
 
         final List<NewTopic> newTopics = topicNamesToCreate.stream()
                 .map(topicName -> new NewTopic(topicName.trim(),
-                        kafkaConfiguration.getPartitionsCount(),
-                        kafkaConfiguration.getReplicationFactor()))
+                        adminProperties.getPartitionsCount(),
+                        adminProperties.getReplicationFactor()))
                 .collect(Collectors.toList());
 
         return adminClient.createTopics(newTopics);

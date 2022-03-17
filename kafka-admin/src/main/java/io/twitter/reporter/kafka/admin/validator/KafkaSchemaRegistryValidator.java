@@ -1,6 +1,6 @@
 package io.twitter.reporter.kafka.admin.validator;
 
-import io.twitter.reporter.config.KafkaConfiguration;
+import io.twitter.reporter.config.KafkaAdminProperties;
 import io.twitter.reporter.kafka.admin.exception.KafkaClientException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class KafkaSchemaRegistryValidator implements KafkaValidator {
 
-    private final KafkaConfiguration kafkaConfiguration;
+    private final KafkaAdminProperties adminProperties;
 
     private final RetryTemplate retryTemplate;
 
@@ -31,7 +31,7 @@ public class KafkaSchemaRegistryValidator implements KafkaValidator {
     }
 
     private boolean checkSchemaRegistry(final RetryContext retryContext) {
-        final Set<String> topicNamesToCreate = kafkaConfiguration.getTopicNamesToCreate();
+        final Set<String> topicNamesToCreate = adminProperties.getTopicNamesToCreate();
         final Set<String> topicNames = getTopics();
 
         final boolean allTopicCreated = topicNames.containsAll(topicNamesToCreate);
