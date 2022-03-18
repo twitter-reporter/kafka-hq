@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class KafkaSchemaRegistryValidator implements KafkaValidator {
+public class TopicValidator implements KafkaValidator {
 
     private final KafkaAdminProperties adminProperties;
 
@@ -27,10 +27,10 @@ public class KafkaSchemaRegistryValidator implements KafkaValidator {
     private final AdminClient adminClient;
 
     public void validate() {
-        retryTemplate.execute(this::checkSchemaRegistry);
+        retryTemplate.execute(this::checkTopics);
     }
 
-    private boolean checkSchemaRegistry(final RetryContext retryContext) {
+    private boolean checkTopics(final RetryContext retryContext) {
         final Set<String> topicNamesToCreate = adminProperties.getTopicNamesToCreate();
         final Set<String> topicNames = getTopics();
 

@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class KafkaTopicValidator implements KafkaValidator {
+public class SchemaRegistryHealthValidator implements KafkaValidator {
 
     private final KafkaAdminProperties adminProperties;
 
@@ -24,10 +24,10 @@ public class KafkaTopicValidator implements KafkaValidator {
     private final WebClient webClient;
 
     public void validate() {
-        retryTemplate.execute(this::checkTopics);
+        retryTemplate.execute(this::checkSchemaRegistryHealth);
     }
 
-    private boolean checkTopics(final RetryContext retryContext) {
+    private boolean checkSchemaRegistryHealth(final RetryContext retryContext) {
         final String schemaRegistryUrl = adminProperties.getSchemaRegistryUrl();
 
         return webClient.method(HttpMethod.GET)
